@@ -10,17 +10,18 @@ import java.util.ArrayList;
  * Created by jamesonstone on 10/4/15.
  */
 public class MusicLibrary {
+    ArrayList<Song> songList = new ArrayList<Song>();
 
     public MusicLibrary() {
     }
 
     /**
      * Read in the music library from file
+     *
      * @param fileName name of file to read from
      * @return a list of song
      */
     public Song readMusicLibrary(String fileName) {
-        ArrayList<Song> songList = new ArrayList<Song>();
         String line;
         BufferedReader fileReader = null;
 
@@ -38,25 +39,15 @@ public class MusicLibrary {
          */
         try {
             while ((line = fileReader.readLine()) != null) {
-                String [] songInfo = line.split(",");
+                String[] songInfo = line.split(",");
                 Song songItem = new Song();
-                System.out.println("_____");
-
-                System.out.println(songInfo[0].trim());
                 songItem.setName(songInfo[0].trim());
-
-                System.out.println(songInfo[1].trim());
                 songItem.setArtist(songInfo[1]);
-
-                System.out.println(songInfo[2].trim());
                 songItem.setAlbum((songInfo[2].trim()));
-
-                System.out.println(songInfo[3].trim());
                 songItem.setDuration(Integer.parseInt(songInfo[3]));
-
-                System.out.println(songInfo[4].trim());
                 songItem.setGenre(songInfo[4].trim());
-
+                //add the song to the songList
+                songList.add(songItem);
             }
         } catch (IOException e) {
             System.out.println("something went wrong trying to get data out");
@@ -67,10 +58,27 @@ public class MusicLibrary {
 
     /**
      * Gets a song from the song array
+     *
      * @param songName the name of the song
      * @return the song object or null
      */
-    public Song getSong(Song songName) {
+    public Song getSong(String songName) {
+        String songListName = songName.toLowerCase().trim();
+        for (Song songs : songList) {
+            if (songs.getName().equals(songListName)) {
+                return songList.get(songList.indexOf(songs));
+            }
+        }
         return null;
     }
+
+    /**
+     * returns the number of songs at read-in
+     *
+     * @return number of songs
+     */
+    public int numberOfSongs() {
+        return songList.size();
+    }
 }
+
